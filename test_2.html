@@ -10,34 +10,69 @@
   <div id="myDiv" style="width: 480px; height: 400px;"><!-- Plotly chart will be drawn inside this DIV --></div>
   <script>
 function makeplot() {
-  Plotly.d3.csv("http://martin-goetz.com/test/2014_apple_stock.csv", function(data){ processData(data) } );
+  Plotly.d3.csv("https://raw.githubusercontent.com/mgo2907/bat/master/test2.csv", function(data){ processData(data) } );
 
 };
 
 function processData(allRows) {
 
   console.log(allRows);
-  var x = [], y = [], standard_deviation = [];
+  var x = [], y = [], y2=[], standard_deviation = [];
 
   for (var i=0; i<allRows.length; i++) {
     row = allRows[i];
     x.push( row['Date'] );
     y.push( row['eins'] );
+    y2.push( row['zwei'] );
   }
-  console.log( 'X',x, 'Y',y, 'SD',standard_deviation );
-  makePlotly( x, y, standard_deviation );
+ // console.log( 'X',x, 'Y',y, 'Y2', y2, 'SD',standard_deviation );
+  makePlotly( x, y, y2 );
 }
 
-function makePlotly( x, y, standard_deviation ){
-  var plotDiv = document.getElementById("plot");
+function makePlotly( x, y, y2 ){
+  //var plotDiv = document.getElementById("plot");
   var traces = [{
-    x: x,
-    y: y
+    x: [x],
+    y: [y],
+      mode: "lines", 
+  name: "Premium", 
+  type: "scatter"
   }];
-
-  Plotly.newPlot('myDiv', traces,
-    {title: 'Plotting CSV data from AJAX call'});
+  
+  var trace2 = [{
+    x: [x],
+    y: [y2],
+      mode: "lines", 
+  name: "Ideal", 
+  type: "scatter"
+  }];  
+  
+  var trace5 = {
+  x: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 
+  y: [5, 2.5, 5, 7.5, 5, 2.5, 7.5, 4.5, 5.5, 5], 
+  line: {color: "rgb(0,176,246)"}, 
+  mode: "lines", 
+  name: "Premium", 
+  type: "scatter"
 };
-  // makeplot();
+var trace6 = {
+  x: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 
+  y: [10, 8, 6, 4, 2, 0, 2, 4, 2, 0], 
+  line: {color: "rgb(231,107,243)"}, 
+  mode: "lines", 
+  name: "Ideal", 
+  type: "scatter"
+};
+  
+var data =[trace5, trace6];
+console.log([traces, trace2]);
+console.log(data);
+Plotly.newPlot('myDiv', data);
+//  Plotly.newPlot('myDiv', data,
+ //   {title: 'Plotting CSV data from AJAX call'});
+};
+ makeplot();
+ 
+ 
   </script>
 </body>

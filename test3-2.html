@@ -1,0 +1,48 @@
+
+  
+  
+  <head>
+  <!-- Plotly.js -->
+   <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+
+<body>
+  <div id="my-graph" style="width: 880px; height: 400px;"><!-- Plotly chart will be drawn inside this DIV --></div>
+  <script>
+Plotly.d3.csv('"https://raw.githubusercontent.com/mgo2907/bat/master/test2.csv', function(err, rows){
+var YEAR = 1997;
+var continents = ['eins','zwei','drei'];
+var POP_TO_PX_SIZE = 2e5;
+function unpack(rows, key) {
+  return rows.map(function(row) { return row[key]; });
+}
+
+var data = continents.map(function(continent) {
+  var rowsFiltered = rows.filter(function(row) {
+      return (row.continent === continent) && (+row.year === YEAR);
+  });
+  return {
+      mode: 'line',
+      name: continent,
+      x: unpack(rowsFiltered, 'lifeExp'),
+      y: unpack(rowsFiltered, 'gdpPercap'),
+      text: unpack(rowsFiltered, 'country'),
+      marker: {
+          sizemode: 'area',
+          size: unpack(rowsFiltered, 'pop'),
+          sizeref: POP_TO_PX_SIZE
+      }
+  };
+});
+var layout = {
+  xaxis: {title: 'Life Expectancy'},
+  yaxis: {title: 'GDP per Capita', type: 'log'},
+  margin: {t: 20},
+  hovermode: 'closest'
+};
+console.log(data);
+Plotly.plot('my-graph', data, layout, {showLink: false});
+});
+ 
+  </script>
+</body>
