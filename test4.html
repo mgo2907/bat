@@ -1,0 +1,49 @@
+
+  
+  
+  <head>
+  <!-- Plotly.js -->
+   <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+
+<body>
+  <div id="my-graph" style="width: 880px; height: 400px;"><!-- Plotly chart will be drawn inside this DIV --></div>
+  <script>
+Plotly.d3.csv('https://raw.githubusercontent.com/mgo2907/bat/master/2016-08-09.csv', function(err, rows){
+var YEAR = 1997;
+var identifier = ['113830', '4242235'];
+var POP_TO_PX_SIZE = 2e5;
+function unpack(rows, key) {
+  return rows.map(function(row) { return row[key]; });
+}
+
+var data = identifier.map(function(identifier) {
+  var rowsFiltered = rows.filter(function(row) {
+      return (row.identifier === identifier) && (+row.date === "22.07.2011"
+);
+  });
+  return {
+      mode: 'line',
+      name: identifier,
+      x: unpack(rowsFiltered, 'date'),
+      y: unpack(rowsFiltered, 'value'),
+      text: unpack(rowsFiltered, 'identifier'),
+      marker: {
+          sizemode: 'date',
+          size: unpack(rowsFiltered, 'value'),
+          sizeref: POP_TO_PX_SIZE
+      }
+  };
+});
+var layout = {
+  xaxis: {title: 'Life Expectancy'},
+  yaxis: {title: 'GDP per Capita', type: 'log'},
+  margin: {t: 20},
+  hovermode: 'closest'
+};
+console.log(data);
+Plotly.plot('my-graph', data, layout, {showLink: false});
+});
+ 
+  </script>
+</body>

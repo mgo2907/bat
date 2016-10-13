@@ -7,39 +7,107 @@
 </head>
 
 <body>
-  <div id="my-graph" style="width: 880px; height: 400px;"><!-- Plotly chart will be drawn inside this DIV --></div>
+  <div id="my-graph" style="width: 880px; height: 480px;"><!-- Plotly chart will be drawn inside this DIV --></div>
   <script>
-Plotly.d3.csv('https://raw.githubusercontent.com/plotly/datasets/master/gapminderDataFiveYear.csv', function(err, rows){
-var YEAR = 1997;
-var continents = ['Asia', 'Europe', 'Africa', 'Oceania', 'Americas'];
-var POP_TO_PX_SIZE = 2e5;
+  
+Plotly.d3.csv('https://raw.githubusercontent.com/mgo2907/bat/master/2016-08-09.csv', function(err, rows){
+//var identifier = ['113830', '4242235'];
+var identifier =
+['113830',
+'113876',
+'113904',
+'113985',
+'114508',
+'3001689',
+'3001937',
+'4002079',
+'4041848',
+'4048275',
+'4055762',
+'4072651',
+'4080954',
+'4080963',
+'4089743',
+'4090384',
+'4092030',
+'4100801',
+'4106903',
+'4142645',
+'4142663',
+'4144838',
+'4144839',
+'4144846',
+'4144847',
+'4145030',
+'4145062',
+'4145097',
+'4145113',
+'4145342',
+'4150602',
+'4151699',
+'4153551',
+'4182766',
+'4182795',
+'4183874',
+'4200927',
+'4219193',
+'4238420',
+'4239955',
+'4242161',
+'4242166',
+'4242235'];
+
+
+
 function unpack(rows, key) {
   return rows.map(function(row) { return row[key]; });
 }
 
-var data = continents.map(function(continent) {
+var data = identifier.map(function(identifier) {
   var rowsFiltered = rows.filter(function(row) {
-      return (row.continent === continent) && (+row.year === YEAR);
+      return (row.ident === identifier);
   });
+  
+  
   return {
       mode: 'line',
-      name: continent,
-      x: unpack(rowsFiltered, 'lifeExp'),
-      y: unpack(rowsFiltered, 'gdpPercap'),
-      text: unpack(rowsFiltered, 'country'),
-      marker: {
-          sizemode: 'area',
-          size: unpack(rowsFiltered, 'pop'),
-          sizeref: POP_TO_PX_SIZE
-      }
+      type: "scatter",
+      name: identifier,
+      x: unpack(rowsFiltered, 'date'),
+     y: unpack(rowsFiltered, 'value'),
+   //   text: unpack(rowsFiltered, 'identifier'),
+  //   marker: {
+  //        sizemode: 'area',
+  //        size: unpack(rowsFiltered, 'pop'),
+  //    }
   };
 });
 var layout = {
-  xaxis: {title: 'Life Expectancy'},
-  yaxis: {title: 'GDP per Capita', type: 'log'},
-  margin: {t: 20},
-  hovermode: 'closest'
+  xaxis: {title: 'date'},
+  yaxis: {title: 'value'},
+  margin: {t: 10},
+  hovermode: 'closest',
+  		showlegend: true,
+		legend: {
+    x: 100,
+    y: 1,
+    traceorder: 'normal',
+    font: {
+      family: 'sans-serif',
+      size: 10,
+      color: '#000'
+    },
+    bgcolor: '#E2E2E2',
+    bordercolor: '#FFFFFF',
+    borderwidth: 2
+  }
 };
+
+
+
+
+	    
+	    
 console.log(data);
 Plotly.plot('my-graph', data, layout, {showLink: false});
 });
