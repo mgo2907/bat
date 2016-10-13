@@ -7,7 +7,18 @@
 </head>
 
 <body>
-  <div id="my-graph" style="width: 880px; height: 480px;"><!-- Plotly chart will be drawn inside this DIV --></div>
+  <div class="showcase__section" id="bubble">
+  <div class="spacer --small"></div>
+  <div id="bubbleplots">
+    <div class="bubbleplot" data-num="0">
+      <div class="plot" id="plotdiv"></div>
+      <div class="control-row">
+        Country: <select class="regiondata">
+        </select>
+      </div>
+    </div>
+  </div>
+</div>
   <script>
   
 Plotly.d3.csv('https://raw.githubusercontent.com/mgo2907/bat/master/2016-08-09_2.csv', function(err, rows){
@@ -128,12 +139,8 @@ function unpack(rows, key) {
 }
 
 
-
-
-	
 		  
-setBubblePlot('zwei');
-identifier='Deutsche Bank AG';
+setBubblePlot('eins');
 
 
 
@@ -153,93 +160,48 @@ var data = banks2show.map(function(identifier) {
   
   return {
       mode: 'line',
-      type: "scatter",
+      type: 'scatter',
       name: unpack(rowsFiltered, 'bankname')[1],
       x: unpack(rowsFiltered, 'date'),
      y: unpack(rowsFiltered, 'value'),
       text: unpack(rowsFiltered, 'bankname'),
-  //   marker: {
-  //        sizemode: 'area',
-  //        size: unpack(rowsFiltered, 'pop'),
-  //    }
   };
 });
-/*
-    var trace1 = {
-      x: currentYear,
-      y: currentGdp,
-      mode: 'lines+markers',
-      marker: {
-        size: 12, 
-        opacity: 0.5
-      }
-    };
-*/
+
 
 
 
     var layout = {
-      title: 'GDP per cap according to Country<br> GDP'
+      title: 'GDP per cap according to Country<br> GDP',
+
+	xaxis: {
+			type: "date",
+ 		   title: 'x Axis'
+  			}
     };
 
-    Plotly.newPlot('my-graph', data, layout);
+    Plotly.newPlot('plotdiv', data, layout);
 };
 
+var innerContainer = document.querySelector('[data-num="0"'),
+    plotEl = innerContainer.querySelector('.plot'),
+    regionSelector = innerContainer.querySelector('.regiondata');
 
-/*
-var data = identifier.map(function(identifier) {
-  var rowsFiltered = rows.filter(function(row) {
-      return (row.ident === identifier);
-  });
-  
-  
-  return {
-      mode: 'line',
-      type: "scatter",
-      name: unpack(rowsFiltered, 'bankname')[1],
-      x: unpack(rowsFiltered, 'date'),
-     y: unpack(rowsFiltered, 'value'),
-      text: unpack(rowsFiltered, 'bankname'),
-  //   marker: {
-  //        sizemode: 'area',
-  //        size: unpack(rowsFiltered, 'pop'),
-  //    }
-  };
-});
-
-
-var layout = {
-  xaxis: {title: 'date'},
-	yaxis: {title: 'value'},
-  margin: {t: 10},
-  hovermode: 'closest',
-  		showlegend: true,
-		legend: {
-    x: 100,
-    y: 1,
-    traceorder: 'normal',
-    font: {
-      family: 'sans-serif',
-      size: 10,
-      color: '#000'
-    },
-   // bgcolor: '#E2E2E2',
-    //bordercolor: '#FFFFFF',
-    //borderwidth: 2
+function assignOptions(textArray, selector) {
+  for (var i = 0; i < textArray.length;  i++) {
+      var currentOption = document.createElement('option');
+      currentOption.text = textArray[i];
+      selector.appendChild(currentOption);
   }
+}
+
+assignOptions(listofRegions, regionSelector);
+
+function updateRegion(){
+    setBubblePlot(regionSelector.value);
+}
   
-  
-};
-
-
-
-
-	    
-	    
-console.log(data);
-Plotly.plot('my-graph', data, layout, {showLink: false});
-
-*/
+regionSelector.addEventListener('change', updateRegion, false);
 });
 
   </script>
