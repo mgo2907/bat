@@ -58,10 +58,6 @@ var identifier =
 '4242235'];
 
 
-/// unpack data and assing
-function unpack(rows, key) {
-  return rows.map(function(row) { return row[key]; });
-}
 
 
 
@@ -90,15 +86,107 @@ var allBankNames = unpack(rows, 'bankname'),
 
 /// determine which region to show
   function getRegionData(chosenRegion) {
-    currentBank = [];
+currentBank=[];
     for (var i = 0 ; i < allRegions.length ; i++){
       if ( allRegions[i] === chosenRegion ) {
         currentBank.push(allBankNames[i]);
+       // console.log(allBankNames[i]);
+      } 
+    }
+    // get unique names
+    return ArrNoDupe(currentBank);
+  };
+
+
+/// determine which region to show
+  function selectData(banklist) {
+    currentBank = [];
+    for (var i = 0 ; i < banklist.length ; i++){
+      if ( allRegions[i] === chosenRegion ) {
+        currentBank.push(allBankNames[i]);
+    		 console.log(allBankNames[i]);
       } 
     }
   };
 
+/// remove duplicates from array
+var a =[];
+function ArrNoDupe(a) {
+    var temp = {};
+    for (var i = 0; i < a.length; i++)
+        temp[a[i]] = true;
+    var r = [];
+    for (var k in temp)
+        r.push(k);
+    return r;
+}
 
+
+/// unpack data and assing
+function unpack(rows, key) {
+  return rows.map(function(row) { return row[key]; });
+}
+
+
+
+
+	
+		  
+setBubblePlot('zwei');
+identifier='Deutsche Bank AG';
+
+
+
+
+function setBubblePlot(chosenRegion) {
+
+		// which regions do we show?
+    banks2show =  getRegionData(chosenRegion);  
+	
+		// cycle over data for regions
+console.log(banks2show);
+var data = banks2show.map(function(identifier) {
+  var rowsFiltered = rows.filter(function(row) {
+      return (row.bankname === identifier);
+  });
+  
+  
+  return {
+      mode: 'line',
+      type: "scatter",
+      name: unpack(rowsFiltered, 'bankname')[1],
+      x: unpack(rowsFiltered, 'date'),
+     y: unpack(rowsFiltered, 'value'),
+      text: unpack(rowsFiltered, 'bankname'),
+  //   marker: {
+  //        sizemode: 'area',
+  //        size: unpack(rowsFiltered, 'pop'),
+  //    }
+  };
+});
+/*
+    var trace1 = {
+      x: currentYear,
+      y: currentGdp,
+      mode: 'lines+markers',
+      marker: {
+        size: 12, 
+        opacity: 0.5
+      }
+    };
+*/
+
+
+
+    var layout = {
+      title: 'GDP per cap according to Country<br> GDP'
+    };
+
+    Plotly.newPlot('my-graph', data, layout);
+};
+
+
+/*
 var data = identifier.map(function(identifier) {
   var rowsFiltered = rows.filter(function(row) {
       return (row.ident === identifier);
@@ -118,6 +206,8 @@ var data = identifier.map(function(identifier) {
   //    }
   };
 });
+
+
 var layout = {
   xaxis: {title: 'date'},
 	yaxis: {title: 'value'},
@@ -148,7 +238,9 @@ var layout = {
 	    
 console.log(data);
 Plotly.plot('my-graph', data, layout, {showLink: false});
+
+*/
 });
- 
+
   </script>
 </body>
