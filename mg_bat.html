@@ -19,63 +19,25 @@
     </div>
   </div>
 </div>
-
-<div id="wrap" style="width:500px">
-    <div id="content">
-        <p>This box will be disabled! <a href="#">Link</a></p>
-    </div>
-    <div id="darkLayer" class="darkClass" style="display:none"></div>
-    <div id="checkbox">
-        <form>
-            <input type="checkbox" id="myCheckBox" onchange="dim(this)" />
-        </form>
-    </div>
-</div>
-
-
-<style>
-.darkClass {
-    background-color: white;
-    filter:alpha(opacity=50);
-    /* IE */
-    opacity: 0.5;
-    /* Safari, Opera */
-    -moz-opacity:0.50;
-    /* FireFox */
-    z-index: 20;
-    height: 100%;
-    width: 100%;
-    background-repeat:no-repeat;
-    background-position:center;
-    position:absolute;
-    top: 0px;
-    left: 0px;
-}
-
-#checkbox {
-    position:relative;
-    z-index:21;
-}
-</style>
-
   <script>
-function dim(cb) {
-    document.getElementById("darkLayer").style.display = (cb.checked) ? '' : 'none';
-}
+  
+
+//Plotly.d3.csv('https://www.martin-goetz.com/_viz/2016-08-09_2.csv', function(err, rows){
+Plotly.d3.csv('https://raw.githubusercontent.com/mgo2907/bat/master/2016-08-09_2.csv', function(err, rows){
+//var identifier = ['113830', '4242235'];
 
 
-//Plotly.d3.csv('http://raw.githubusercontent.com/mgo2907/bat/master/2016-08-09_2.csv', function(err, rows){
-//Plotly.d3.csv('http://www.martin-goetz.com/_viz/2016-10-14.csv', function(err, rows){
-Plotly.d3.csv('http://www.martin-goetz.com/_viz/test.csv', function(err, rows){
+
+
+
 
 /// variables we use
 var allBankNames = unpack(rows, 'bankname'),
-    allRegions = unpack(rows, 'country'),
+    allRegions = unpack(rows, 'region'),
     listofBanks = [],
     listofRegions = [],
     currentBank,
     currentRegion;
-    
 
 /// get list of banks
   for (var i = 0; i < allBankNames.length; i++ ){
@@ -137,7 +99,7 @@ function unpack(rows, key) {
 
 
 		  
-setBubblePlot('DE');
+setBubblePlot('eins');
 
 
 
@@ -160,7 +122,7 @@ var data = banks2show.map(function(identifier) {
       type: 'scatter',
       name: unpack(rowsFiltered, 'bankname')[1],
       x: unpack(rowsFiltered, 'date'),
-     y: unpack(rowsFiltered, 'share'),
+     y: unpack(rowsFiltered, 'value'),
       text: unpack(rowsFiltered, 'bankname'),
   };
 });
