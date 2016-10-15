@@ -65,8 +65,7 @@ function dim(cb) {
 
 
 //Plotly.d3.csv('http://raw.githubusercontent.com/mgo2907/bat/master/2016-08-09_2.csv', function(err, rows){
-//Plotly.d3.csv('http://www.martin-goetz.com/_viz/2016-10-14.csv', function(err, rows){
-Plotly.d3.csv('http://www.martin-goetz.com/_viz/test.csv', function(err, rows){
+Plotly.d3.csv('https://raw.githubusercontent.com/mgo2907/bat/master/2016-10-14.csv', function(err, rows){
 
 /// variables we use
 var allBankNames = unpack(rows, 'bankname'),
@@ -180,6 +179,22 @@ xaxis: {
     //tickwidth: 0.5,
     //tickcolor: '#000'
   },
+  
+  images: [
+    {
+      x: 1,
+      y: 1.05,
+      sizex: 0.2,
+      sizey: 0.2,
+      source: "https://raw.githubusercontent.com/cldougl/plot_images/add_r_img/vox.png",
+      xanchor: "right",
+      xref: "paper",
+      yanchor: "bottom",
+      yref: "paper"
+    }
+  ],
+  
+  
     };
 
     Plotly.newPlot('plotdiv', data, layout);
