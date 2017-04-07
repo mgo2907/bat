@@ -1,6 +1,10 @@
 
   function dimer(bool){
-    document.getElementById("darkLayer").style.display =  '' ;
+  alert("D I S C L A I M E R:\n\nThis graph shows the evolution of European banks' outstanding publicly issued subordinated debt.\n\nNote that this graph does not(!) show banks' total amount of bail-inable debt, but the outstanding amount of publicly issued subordinated debt.\n\nA bank's total amount of bail-inable debt may be higher. Subordinated bonds are securities that are pivotal to a potential bail-in due to their claim structure.\n\nPlease confirm that you have read and understood the aforementioned information by clicking on the button below.\n"); 
+   // document.getElementById("darkLayer").style.display =  '' ;
+    
+
+
 }    
 
 
@@ -14,7 +18,7 @@ function dim(cb) {
 
 
 //Plotly.d3.csv('http://raw.githubusercontent.com/mgo2907/bat/master/2016-08-09_2.csv', function(err, rows){
-Plotly.d3.csv('https://raw.githubusercontent.com/mgo2907/bat/master/2016-10-14.csv', function(err, rows){
+Plotly.d3.csv('https://raw.githubusercontent.com/mgo2907/bat/master/2017-04-05.csv', function(err, rows){
 
 /// variables we use
 var allBankNames = unpack(rows, 'bankname'),
@@ -124,8 +128,9 @@ var data = banks2show.map(function(identifier) {
 
 
 
-    var layout = {
-      title: '<em>Outstanding subordinated debt by European banks, scaled by previous total liabilites </em><br> Th  ',
+    var layout = { 
+      title: '<em>Outstanding subordinated debt by European banks<br> as a percentage of previous total liabilities</em>  ',
+      hovermode:'closest',
      annotations: {
       text: 'simple annotation',
      },
@@ -171,7 +176,7 @@ xaxis: {
   
     };
 
-    Plotly.newPlot('plotdiv', data, layout);
+    Plotly.newPlot('plotdiv', data, layout, {displayModeBar: true});
 };
 
 var innerContainer = document.querySelector('[data-num="0"'),
